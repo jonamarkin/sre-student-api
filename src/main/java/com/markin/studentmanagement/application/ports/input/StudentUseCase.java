@@ -12,7 +12,7 @@ public interface StudentUseCase {
 
     Student getStudentById(UUID studentId);
 
-    void updateStudent(UUID studentId, Student student) throws StudentNotFoundException;
+    void updateStudent(UUID studentId, Student student);
 
     void deleteStudent(UUID studentId);
 }

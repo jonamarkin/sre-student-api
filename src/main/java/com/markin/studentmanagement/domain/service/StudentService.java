@@ -1,4 +1,4 @@
-package com.markin.studentmanagement.application.ports;
+package com.markin.studentmanagement.domain.service;
 
 import com.markin.studentmanagement.application.ports.input.StudentUseCase;
 import com.markin.studentmanagement.application.ports.output.StudentRepository;
@@ -6,13 +6,13 @@ import com.markin.studentmanagement.domain.exception.StudentNotFoundException;
 import com.markin.studentmanagement.domain.model.Student;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class StudentServiceImpl implements StudentUseCase {
-
+public class StudentService implements StudentUseCase {
     private final StudentRepository studentRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
@@ -28,14 +28,15 @@ public class StudentServiceImpl implements StudentUseCase {
 
     @Override
     public Student getStudentById(UUID studentId) {
-        return studentRepository.findById(studentId);
+        return studentRepository.findById(studentId).orElseThrow(
+                () -> new StudentNotFoundException(String.format("Student with ID %s not found", studentId)));
     }
 
     @Override
-    public void updateStudent(UUID studentId, Student student) throws StudentNotFoundException {
-        Student existingStudent = studentRepository.findById(studentId);
+    public void updateStudent(UUID studentId, Student student) {
+        Optional<Student> existingStudent = studentRepository.findById(studentId);
 
-        if(existingStudent!=null){
+        if(existingStudent.isPresent()){
             student.setStudentId(studentId);
             studentRepository.save(student);
         }else{

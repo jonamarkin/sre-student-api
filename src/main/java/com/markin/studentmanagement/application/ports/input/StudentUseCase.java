@@ -1,5 +1,6 @@
 package com.markin.studentmanagement.application.ports.input;
 
+import com.markin.studentmanagement.domain.exception.StudentNotFoundException;
 import com.markin.studentmanagement.domain.model.Student;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface StudentUseCase {
 
     Student getStudentById(UUID studentId);
 
-    void updateStudent(UUID studentId, Student student);
+    void updateStudent(UUID studentId, Student student) throws StudentNotFoundException;
 
     void deleteStudent(UUID studentId);
 }

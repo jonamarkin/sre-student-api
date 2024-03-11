@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class Student {
-    private UUID studentId;
+    private Long id;
     private String firstName;
     private String lastName;
     private LocalDateTime dateOfBirth;

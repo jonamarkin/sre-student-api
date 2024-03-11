@@ -11,7 +11,7 @@ public interface StudentUseCase {
 
     Student getStudentById(Long id);
 
-    void updateStudent(Long id, Student student);
+    Student updateStudent(Long id, Student student);
 
     void deleteStudent(Long id);
 }

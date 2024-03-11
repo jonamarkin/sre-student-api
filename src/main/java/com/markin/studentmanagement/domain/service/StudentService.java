@@ -34,7 +34,7 @@ public class StudentService implements StudentUseCase {
     }
 
     @Override
-    public void updateStudent(Long id, Student student) {
+    public Student updateStudent(Long id, Student student) {
         Optional<Student> existingStudent = studentOutputPort.findById(id);
 
         if(existingStudent.isPresent()){
@@ -43,6 +43,8 @@ public class StudentService implements StudentUseCase {
         }else{
             throw new StudentNotFoundException(String.format("Student with ID %s not found", id));
         }
+
+        return student;
     }
 
     @Override

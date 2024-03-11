@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,12 @@ public class StudentRestAdapter {
     public ResponseEntity<StudentResponseDto> getStudentById(Long id){
         Student student = studentUseCase.getStudentById(id);
         return new ResponseEntity<>(StudentResponseDto.builder().data(student).message("Student successfully retrieved").status("success").build(), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/students")
+    public ResponseEntity<StudentResponseDto> updateSExistingStudent(Student student, Long id){
+        Student existingStudent = studentUseCase.updateStudent(id, student);
+        return new ResponseEntity<>(StudentResponseDto.builder().data(student).message("Student information updated").status("success").build(), HttpStatus.OK);
     }
 }
 

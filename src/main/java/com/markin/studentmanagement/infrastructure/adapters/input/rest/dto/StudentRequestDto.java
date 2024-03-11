@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Builder
 @Data
@@ -24,6 +26,23 @@ public class StudentRequestDto {
     private String lastName;
 
     @NotNull(message = "dateOfBirth cannot be null")
-    @ValidDateOfBirth
-    private LocalDateTime dateOfBirth;
+    private String dateOfBirth;
+
+
+    public void setDateOfBirth(String dateOfBirthString) {
+        if (dateOfBirthString == null || dateOfBirthString.isEmpty()) {
+            throw new IllegalArgumentException("Date of birth cannot be empty");
+        }
+
+        try {
+
+            LocalDateTime parsedDate = LocalDateTime.parse(dateOfBirthString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (parsedDate.isAfter(LocalDateTime.now())) {
+                throw new IllegalArgumentException("Date of birth cannot be in the future");
+            }
+            this.dateOfBirth = parsedDate.toString();
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Please use YYYY-MM-DD");
+        }
+    }
 }

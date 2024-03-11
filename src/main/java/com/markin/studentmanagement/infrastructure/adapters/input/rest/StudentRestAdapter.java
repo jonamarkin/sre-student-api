@@ -31,6 +31,11 @@ public class StudentRestAdapter {
                 .build(), HttpStatus.OK);
     }
 
+    @PostMapping(value="/students")
+    public ResponseEntity<StudentResponseDto> addNewStudent(@RequestBody StudentRequestDto studentRequestDto){
+
+    }
+
     @GetMapping(value = "/students")
     public ResponseEntity<StudentResponseDto> getAllStudents() {
         log.info("Fetching all students");

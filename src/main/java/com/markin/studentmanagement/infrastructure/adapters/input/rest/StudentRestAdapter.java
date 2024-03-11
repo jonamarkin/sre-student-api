@@ -33,7 +33,15 @@ public class StudentRestAdapter {
 
     @PostMapping(value="/students")
     public ResponseEntity<StudentResponseDto> addNewStudent(@RequestBody StudentRequestDto studentRequestDto){
+        log.info("Adding new student");
+        Student student = studentMapper.toStudentFromDto(studentRequestDto);
+        Student addedStudent = studentUseCase.addStudent(student);
 
+        return new ResponseEntity<>(StudentResponseDto.builder()
+                .data(addedStudent)
+                .message("Student added successfully")
+                .status("success")
+                .build(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/students")

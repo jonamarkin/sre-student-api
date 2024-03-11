@@ -1,12 +1,14 @@
 package com.markin.studentmanagement.infrastructure.adapters.output.persistence;
 
 import com.markin.studentmanagement.application.port.output.StudentOutputPort;
+import com.markin.studentmanagement.domain.exception.StudentNotFoundException;
 import com.markin.studentmanagement.domain.model.Student;
 import com.markin.studentmanagement.infrastructure.adapters.output.persistence.entity.StudentEntity;
 import com.markin.studentmanagement.infrastructure.adapters.output.persistence.mapper.StudentMapper;
 import com.markin.studentmanagement.infrastructure.adapters.output.persistence.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,11 +39,25 @@ public class StudentPersistenceAdapter implements StudentOutputPort {
 
     @Override
     public void delete(Long id) {
+        Optional<StudentEntity> studentEntity = studentRepository.findById(id);
+
+        if(studentEntity.isEmpty()){
+            throw new StudentNotFoundException(String.format("Student with ID %s not found", id));
+        }
+
+        studentRepository.delete(studentEntity.get());
 
     }
 
     @Override
     public List<Student> findAll() {
-        return null;
+        List<StudentEntity> studentEntityList = studentRepository.findAll();
+        List<Student> studentList = new ArrayList<>();
+
+        for(StudentEntity studentEntity: studentEntityList){
+            studentList.add(studentMapper.toStudent(studentEntity));
+        }
+
+        return studentList;
     }
 }

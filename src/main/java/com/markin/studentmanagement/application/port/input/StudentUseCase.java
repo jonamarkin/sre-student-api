@@ -9,9 +9,9 @@ public interface StudentUseCase {
     Student addStudent(Student student);
     List<Student> getAllStudents();
 
-    Student getStudentById(UUID studentId);
+    Student getStudentById(Long id);
 
-    void updateStudent(UUID studentId, Student student);
+    void updateStudent(Long id, Student student);
 
-    void deleteStudent(UUID studentId);
+    void deleteStudent(Long id);
 }

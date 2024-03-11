@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface StudentOutputPort {
     Student save(Student student);
-    Optional<Student> findById(UUID studentId);
-    void delete(UUID studentId);
+    Optional<Student> findById(Long id);
+    void delete(Long id);
     List<Student> findAll();
 }

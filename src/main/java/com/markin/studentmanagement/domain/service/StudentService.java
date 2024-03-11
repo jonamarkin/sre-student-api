@@ -27,25 +27,25 @@ public class StudentService implements StudentUseCase {
     }
 
     @Override
-    public Student getStudentById(UUID studentId) {
-        return studentRepository.findById(studentId).orElseThrow(
-                () -> new StudentNotFoundException(String.format("Student with ID %s not found", studentId)));
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id).orElseThrow(
+                () -> new StudentNotFoundException(String.format("Student with ID %s not found", id)));
     }
 
     @Override
-    public void updateStudent(UUID studentId, Student student) {
-        Optional<Student> existingStudent = studentRepository.findById(studentId);
+    public void updateStudent(Long id, Student student) {
+        Optional<Student> existingStudent = studentRepository.findById(id);
 
         if(existingStudent.isPresent()){
-            student.setStudentId(studentId);
+            student.setId(id);
             studentRepository.save(student);
         }else{
-            throw new StudentNotFoundException(String.format("Student with ID %s not found", studentId));
+            throw new StudentNotFoundException(String.format("Student with ID %s not found", id));
         }
     }
 
     @Override
-    public void deleteStudent(UUID studentId) {
-        studentRepository.delete(studentId);
+    public void deleteStudent(Long id) {
+        studentRepository.delete(id);
     }
 }

@@ -7,6 +7,7 @@ import com.markin.studentmanagement.infrastructure.adapters.output.persistence.e
 import com.markin.studentmanagement.infrastructure.adapters.output.persistence.mapper.StudentMapper;
 import com.markin.studentmanagement.infrastructure.adapters.output.persistence.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Slf4j
 public class StudentPersistenceAdapter implements StudentOutputPort {
 
     private final StudentRepository studentRepository;
@@ -22,6 +24,7 @@ public class StudentPersistenceAdapter implements StudentOutputPort {
     public Student save(Student student) {
         StudentEntity studentEntity = studentMapper.toStudentEntity(student);
         studentRepository.save(studentEntity);
+        log.info("Student with ID" + student.getId() + "saved");
         return studentMapper.toStudent(studentEntity);
     }
 
@@ -30,10 +33,12 @@ public class StudentPersistenceAdapter implements StudentOutputPort {
         Optional<StudentEntity> studentEntity =  studentRepository.findById(id);
 
         if(studentEntity.isEmpty()){
-            return Optional.empty();
+            log.error(String.format("Student with ID %s not found", id));
+            throw new StudentNotFoundException(String.format("Student with ID %s not found", id));
         }
 
         Student student = studentMapper.toStudent(studentEntity.get());
+        log.info(String.format("Student with ID %s retrieved", id));
         return Optional.of(student);
     }
 
@@ -42,6 +47,7 @@ public class StudentPersistenceAdapter implements StudentOutputPort {
         Optional<StudentEntity> studentEntity = studentRepository.findById(id);
 
         if(studentEntity.isEmpty()){
+            log.error(String.format("Student with ID %s not found", id));
             throw new StudentNotFoundException(String.format("Student with ID %s not found", id));
         }
 

@@ -6,6 +6,11 @@ import com.markin.studentmanagement.infrastructure.adapters.output.persistence.e
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class StudentMapper {
 
     @Autowired
@@ -20,11 +25,19 @@ public class StudentMapper {
         return modelMapper.map(student, StudentEntity.class);
     }
 
-    public Student toStudentFromDto(StudentRequestDto studentRequestDto) {
-        return modelMapper.map(studentRequestDto, Student.class);
+
+    public  Student toStudentFromDto(StudentRequestDto studentRequestDto) {
+        if (studentRequestDto == null) {
+            return null;
+        }
+
+        Student student = new Student();
+        student.setFirstName(studentRequestDto.getFirstName());
+        student.setLastName(studentRequestDto.getLastName());
+        student.setDateOfBirth(LocalDateTime.parse(studentRequestDto.getDateOfBirth()));
+
+        return student;
     }
 
-    public StudentEntity toStudentEntityFromDto(StudentRequestDto studentRequestDto) {
-        return modelMapper.map(studentRequestDto, StudentEntity.class);
-    }
+
 }

@@ -35,6 +35,7 @@ public class StudentRestAdapter {
     public ResponseEntity<StudentResponseDto> addNewStudent(@RequestBody StudentRequestDto studentRequestDto){
         log.info("Adding new student");
         Student student = studentMapper.toStudentFromDto(studentRequestDto);
+        log.info(String.valueOf(student));
         Student addedStudent = studentUseCase.addStudent(student);
 
         return new ResponseEntity<>(StudentResponseDto.builder()

@@ -8,10 +8,7 @@ import com.markin.studentmanagement.infrastructure.adapters.output.persistence.m
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,8 +40,8 @@ public class StudentRestAdapter {
                 .build(), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/students")
-    public ResponseEntity<StudentResponseDto> updateSExistingStudent(StudentRequestDto studentRequestDto, Long id){
+    @PutMapping(value = "/students/{id}")
+    public ResponseEntity<StudentResponseDto> updateSExistingStudent(@RequestBody StudentRequestDto studentRequestDto, @PathVariable Long id){
         Student existingStudent = studentUseCase.getStudentById(id);
 
         if(studentRequestDto.getFirstName()!=null){
@@ -63,6 +60,15 @@ public class StudentRestAdapter {
         return new ResponseEntity<>(StudentResponseDto.builder()
                 .data(updatedStudent)
                 .message("Student information updated")
+                .status("success")
+                .build(), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/students/{id}")
+    public ResponseEntity<StudentResponseDto> deleteStudent(@PathVariable Long id){
+        studentUseCase.deleteStudent(id);
+        return new ResponseEntity<>(StudentResponseDto.builder()
+                .message("Student deleted successfully")
                 .status("success")
                 .build(), HttpStatus.OK);
     }

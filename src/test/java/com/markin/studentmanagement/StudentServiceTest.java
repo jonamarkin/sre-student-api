@@ -7,6 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,5 +31,14 @@ public class StudentServiceTest {
         Student student = new Student();
         when(studentOutputPort.save(student)).thenReturn(student);
         assertEquals(student, studentService.addStudent(student));
+    }
+
+    @Test
+    public void testGetAllStudents(){
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(new Student());
+        studentList.add(new Student());
+        when(studentOutputPort.findAll()).thenReturn(studentList);
+        assertEquals(studentList, studentService.getAllStudents());
     }
 }

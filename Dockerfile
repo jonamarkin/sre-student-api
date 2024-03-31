@@ -21,5 +21,6 @@ COPY --from=build /workspace/app/target/*.jar ./app.jar
 EXPOSE 8080
 
 # Define entry point to run the Spring Boot application
+# Also entry point is the recommended approach for Java compared to CMD
 ENTRYPOINT ["java", "-jar", "app.jar"]
 

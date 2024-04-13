@@ -17,7 +17,7 @@
 #	docker run -d -p 8080:8080 $(DOCKER_IMAGE_NAME)
 
 
-.PHONY: build-db run-db migrate-db build-api run-api
+.PHONY: build-db run-db migrate-db build-app run-app
 
 build:
 	docker-compose build
@@ -26,12 +26,10 @@ run-db:
 	docker-compose up -d db
 
 migrate-db:
-	docker-compose run api flyway migrate
+	docker-compose run app flyway migrate
 
-build-api:
-	docker-compose build api
+build-app:
+	docker-compose build app
 
-run-api:
-	make run-db
-	make migrate-db
-	docker-compose up -d api
+run-app:
+	docker-compose up

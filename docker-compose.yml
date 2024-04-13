@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=studentuser
       - POSTGRES_PASSWORD=studentpass
 
-  api:
+  app:
     depends_on:
       - db
     build: .

@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  db:
+    image: h2database/h2
+    volumes:
+      - db_data/

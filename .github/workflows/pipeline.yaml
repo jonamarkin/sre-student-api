@@ -1,0 +1,61 @@
+name: CI Pipeline
+
+on:
+  push:
+    paths:
+      - 'src/**'
+  pull_request:
+    paths:
+      - 'src/**'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: studentuser
+          POSTGRES_PASSWORD: studentpass
+          POSTGRES_DB: studentdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build API
+        run: make build-app
+
+      - name: Run tests
+        run: make test-app-ci
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
+          SPRING_DATASOURCE_USERNAME: studentuser
+          SPRING_DATASOURCE_PASSWORD: studentpass
+          SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      #      - name: Perform code linting
+      #        run: make lint
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Build and push Docker image
+        run: make docker-build-push
+        env:
+          IMAGE_TAG: latest

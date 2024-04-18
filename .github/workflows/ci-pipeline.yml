@@ -39,11 +39,6 @@ jobs:
 
       - name: Build API
         run: make build-app
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
-          SPRING_DATASOURCE_USERNAME: studentuser
-          SPRING_DATASOURCE_PASSWORD: studentpass
-          SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
       - name: Run tests
         run: make test-app-ci

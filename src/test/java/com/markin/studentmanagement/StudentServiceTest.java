@@ -6,6 +6,9 @@ import com.markin.studentmanagement.domain.model.Student;
 import com.markin.studentmanagement.domain.service.StudentService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -15,7 +18,10 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+//@SpringBootTest
+
+@SpringBootTest(classes = StudentServiceTest.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class StudentServiceTest {
 
     private StudentOutputPort studentOutputPort;

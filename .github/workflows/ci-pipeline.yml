@@ -46,7 +46,7 @@ jobs:
           SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
       - name: Run tests
-        run: make test-app
+        run: make test-app-ci
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
           SPRING_DATASOURCE_USERNAME: studentuser

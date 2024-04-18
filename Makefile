@@ -39,3 +39,6 @@ lint:
 
 test-app:
 	mvn test
+
+test-app-ci:
+	mvn test -Dspring.profiles.active=ci

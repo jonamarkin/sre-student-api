@@ -36,16 +36,23 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '11'
+          postgresql db: studentdb
+          postgresql user: studentuser
+          postgresql password: studentpass
+
       - name: Build API
         run: make build-app
 
       - name: Run tests
         run: make test-app-ci
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
-          SPRING_DATASOURCE_USERNAME: studentuser
-          SPRING_DATASOURCE_PASSWORD: studentpass
-          SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#        env:
+#          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
+#          SPRING_DATASOURCE_USERNAME: studentuser
+#          SPRING_DATASOURCE_PASSWORD: studentpass
+#          SPRING_JPA_HIBERNATE_DDL_AUTO: update
       #      - name: Perform code linting
       #        run: make lint
 

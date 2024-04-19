@@ -47,7 +47,7 @@ public class StudentRestAdapter {
 
     @GetMapping(value = "/students")
     public ResponseEntity<StudentResponseDto> getAllStudents() {
-        log.info("Fetching all student");
+        log.info("Fetching all students");
         List<Student> students = studentUseCase.getAllStudents();
         return new ResponseEntity<>(StudentResponseDto.builder()
                 .data(students)

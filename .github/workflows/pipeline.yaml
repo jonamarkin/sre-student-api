@@ -42,10 +42,6 @@ jobs:
       - name: Run tests
         run: make test-app
         env:
-#          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
-#          SPRING_DATASOURCE_USERNAME: studentuser
-#          SPRING_DATASOURCE_PASSWORD: studentpass
-#          SPRING_JPA_HIBERNATE_DDL_AUTO: update
           SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}

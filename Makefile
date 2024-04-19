@@ -1,5 +1,7 @@
-# Variables
-DOCKER_IMAGE_NAME := studentapi:v1.0.0
+DOCKER_REPO := atomarkin/studentapi
+
+# Define variable for image tag, using an environment variable with a default
+IMAGE_TAG ?= latest
 
 .PHONY: build build-db run-db migrate-db build-app run-app lint test-app test-app-ci
 
@@ -31,14 +33,17 @@ lint:
 test-app:
 	mvn test
 
-# Run application tests with CI specific configurations
-test-app-ci:
-	mvn test -Dspring.profiles.active=ci
+# Run Docker image
+docker-run:
+	docker run -d -p 8080:8080 $(DOCKER_REPO):$(IMAGE_TAG)
 
 # Build Docker image
 docker-build:
-	docker build -t $(DOCKER_IMAGE_NAME) .
+	docker build -t $(DOCKER_REPO):$(IMAGE_TAG) .
 
-# Run Docker image
-docker-run:
-	docker run -d -p 8080:8080 $(DOCKER_IMAGE_NAME)
+# Push Docker image
+docker-push:
+	docker push $(DOCKER_REPO):$(IMAGE_TAG)
+
+# Build and push Docker image
+docker-build-push: docker-build docker-push

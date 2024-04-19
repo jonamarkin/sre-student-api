@@ -36,25 +36,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '16'
-          postgresql db: studentdb
-          postgresql user: studentuser
-          postgresql password: studentpass
-
       - name: Build API
         run: make build-app
 
       - name: Run tests
-        run: make test-app-ci
-#        env:
+        run: make test-app
+        env:
 #          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studentdb
 #          SPRING_DATASOURCE_USERNAME: studentuser
 #          SPRING_DATASOURCE_PASSWORD: studentpass
 #          SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      #      - name: Perform code linting
-      #        run: make lint
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin

@@ -10,13 +10,43 @@ services:
       - POSTGRES_USER=studentuser
       - POSTGRES_PASSWORD=studentpass
 
-  app:
+  app1:
+    image: studentapi
+    container_name: app1
+    restart: always
     depends_on:
       - db
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studentdb
       - SPRING_DATASOURCE_USERNAME=studentuser
       - SPRING_DATASOURCE_PASSWORD=studentpass
+
+
+  app2:
+    image: studentapi
+    container_name: app2
+    restart: always
+    depends_on:
+      - db
+    build: .
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studentdb
+      - SPRING_DATASOURCE_USERNAME=studentuser
+      - SPRING_DATASOURCE_PASSWORD=studentpass
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app1
+      - app2
